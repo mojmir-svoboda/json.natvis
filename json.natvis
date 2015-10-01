@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<!-- rapidjson::GenericValue - basic support -->
+	<Type Name="rapidjson::GenericValue&lt;*,*&gt;">
+		<DisplayString Condition="flags_ == 0">null</DisplayString>
+		<DisplayString Condition="(flags_ &amp; 512) == 512">{data_.n.i}</DisplayString>
+
+		<DisplayString Condition="flags_ == 3">obj n={data_.o.size}</DisplayString>
+		<DisplayString Condition="flags_ == 4">arr n={data_.a.size}</DisplayString>
+		<DisplayString Condition="flags_ &amp; 5">{data_.s.str,s8}</DisplayString>
+		<Expand>
+
+			<ArrayItems Condition="flags_ == 3">
+				<Size>data_.o.size</Size>
+				<ValuePointer>data_.o.members</ValuePointer>
+			</ArrayItems>
+
+			<Item Condition="flags_ == 4" Name="[size]">data_.a.size</Item>
+			<Item Condition="flags_ == 4" Name="[capacity]">data_.a.capacity</Item>
+			<ArrayItems Condition="flags_ == 4">
+				<Size>data_.a.size</Size>
+				<ValuePointer>data_.a.elements</ValuePointer>
+			</ArrayItems>
+
+		</Expand>
+	</Type>
+
+	<Type Name="rapidjson::GenericValue&lt;*,*&gt;::Member">
+		<DisplayString>{{{name}, {value}}}</DisplayString>
+	</Type>
+
+</AutoVisualizer>
+
